@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TAX INVOICE — NISTD</title>
+  <style>
+    :root{
+      --ink:#111;
+      --muted:#444;
+      --light:#f6f6f6;
+      --brand:#0b3b6a;
+      --accent:#c41230;
+      --border:#cfcfcf;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;color:var(--ink);font:14px/1.45 "Times New Roman", Times, serif;background:#fff}
+    .page{width:210mm; min-height:297mm; margin:0 auto; padding:18mm 16mm; position:relative; background:#fff}
+    .watermark{position:absolute; inset:0; pointer-events:none;}
+    .print-actions{position:sticky; top:0; background:#fff; padding:8px 12px; border-bottom:1px solid var(--border); display:flex; gap:8px; justify-content:flex-end}
+    .btn{appearance:none;border:1px solid var(--border);background:#fff;padding:8px 12px;border-radius:8px;cursor:pointer}
+    .btn:hover{background:var(--light)}
+
+    /* Header */
+    .header{display:grid; grid-template-columns:120px 1fr 160px; align-items:center; gap:12px; border-bottom:2px solid #000; padding-bottom:10px}
+    .logo{width:110px;height:110px;border:2px solid #000;border-radius:50%;display:grid;place-items:center;overflow:hidden}
+    .logo-img{width:100%;height:100%;object-fit:cover}
+    .inst{ text-align:center }
+    .inst h1{margin:0;font-size:20px;letter-spacing:.3px;text-transform:capitalize}
+    .inst .iso{font-size:12px;color:var(--muted);margin-top:2px}
+    .title{ text-align:right }
+    .title .tag{font-size:22px; font-weight:bold; letter-spacing:1px}
+
+    .contact{margin-top:10px; font-size:13px}
+    .contact p{margin:2px 0}
+    .contact .row{display:flex; gap:12px; flex-wrap:wrap}
+
+    /* Meta blocks */
+    .meta{display:grid; grid-template-columns:1.2fr .8fr; gap:12px; margin:12px 0}
+    .card{border:1px solid #000; padding:10px}
+    .card h3{margin:0 0 6px 0; font-size:14px; text-transform:uppercase}
+    .meta .grid{display:grid; grid-template-columns:110px 1fr; row-gap:4px; column-gap:8px}
+    .meta .label{color:#000}
+
+    /* Reference strip */
+    .refstrip{display:flex; gap:12px; font-size:13px; margin:6px 0}
+    .badge{border:1px solid #000; padding:4px 8px; border-radius:4px}
+
+    /* Table */
+    table{width:100%; border-collapse:collapse; margin-top:6px}
+    th, td{border:1px solid #000; padding:8px 6px; vertical-align:top}
+    th{background:#efefef; font-weight:600}
+    .col-sn{width:34px; text-align:center}
+    .col-topic{width:28%}
+    .col-hsn{width:70px; text-align:center}
+    .col-fee{width:120px; text-align:right}
+    .col-venue{width:15%}
+    .col-part{width:13%}
+    .col-date{width:110px}
+    .col-amt{width:120px; text-align:right}
+    .topic{white-space:pre-line}
+
+    /* Totals */
+    .totals{margin-top:10px; display:grid; grid-template-columns:1fr 320px; gap:12px}
+    .amounts{border:1px solid #000}
+    .row-line{display:grid; grid-template-columns:1fr 140px; border-bottom:1px solid #000}
+    .row-line:last-child{border-bottom:none}
+    .row-line div{padding:8px}
+    .row-line .name{font-weight:600}
+    .row-line .val{text-align:right}
+    .inwords{border:1px solid #000; padding:8px}
+    .inwords b{display:block; margin-bottom:4px}
+
+    /* Footer */
+    .footer{margin-top:12px; display:grid; grid-template-columns:1fr 1fr; gap:12px}
+    .terms ol{margin:6px 0 0 18px; padding:0}
+    .bank .grid{display:grid; grid-template-columns:150px 1fr; row-gap:6px; column-gap:10px}
+
+    .signature{margin-top:18px; text-align:right; position:relative; min-height:80px}
+    .signature .seal{position:absolute; right:0; bottom:28px; width:120px; opacity:0.95}
+
+    /* Print */
+    @media print{
+      .print-actions{display:none}
+      .page{padding:12mm}
+      a[href]:after{content:none !important}
+    }
+  </style>
+</head>
+<body>
+  <div class="print-actions">
+    <button class="btn" onclick="window.print()">Print / Save as PDF</button>
+  </div>
+
+  <div class="page" id="invoice">
+    <header class="header">
+      <div class="logo"><img class="logo-img" src="pdf_image_1_1.png" alt="Institute Logo"/></div>
+      <div class="inst">
+        <h1>National Institute Of Secretariat Training & Development</h1>
+        <div class="iso">(An ISO 9001:2015 Institute)</div>
+      </div>
+      <div class="title">
+        <div class="tag">TAX INVOICE</div>
+        <div class="gst">GSTIN No.: 09ADEPA3952G3ZQ</div>
+      </div>
+    </header>
+
+    <section class="contact">
+      <p><b>Plot No B-11C, Inderprastha, NCR New Delhi, Ghaziabad-201102, India</b></p>
+      <div class="row">
+        <div>Ph. +91-120-2682110, +91-120-2682111</div>
+        <div>Fax: +91-120-2682109</div>
+        <div>WhatsApp: +91-9811094923</div>
+      </div>
+      <div class="row">
+        <div>E-mail: info@nistd.in, infonistd@gmail.com</div>
+        <div>Website: www.nistd.in</div>
+      </div>
+    </section>
+
+    <section class="meta">
+      <div class="card">
+        <h3>Billed To</h3>
+        <div class="grid">
+          <div class="label">The Managing Director,</div>
+          <div>Intelligent Communication Systems India Ltd.</div>
+
+          <div class="label">Address</div>
+          <div>Administrative Building, 1st Floor, Above Post Office, Okhla Industrial Estate Phase-3, New Delhi - 110020</div>
+
+          <div class="label">Contact No.</div>
+          <div>&mdash;</div>
+
+          <div class="label">Email ID</div>
+          <div>pankaj.sharma@icsil.in</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Invoice Details</h3>
+        <div class="grid">
+          <div class="label">Invoice No.</div>
+          <div>110002774</div>
+
+          <div class="label">Date</div>
+          <div>29-July-2025</div>
+
+          <div class="label">PAN No.</div>
+          <div>ADEPA3952G</div>
+
+          <div class="label">GSTIN</div>
+          <div>09ADEPA3952G3ZQ</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="refstrip">
+      <div class="badge"><b>Ref No:</b> Your Email Jul 28, 2025, 8:11 PM</div>
+      <div class="badge"><b>Date:</b> 28/07/2025</div>
+    </section>
+
+    <table>
+      <thead>
+        <tr>
+          <th class="col-sn">S.N</th>
+          <th class="col-topic">Training Topic</th>
+          <th class="col-hsn">HSN Code</th>
+          <th class="col-fee">Course fee Per Participant (Rs)</th>
+          <th class="col-venue">Venue</th>
+          <th class="col-part">Participants</th>
+          <th class="col-date">Date</th>
+          <th class="col-amt">Amount (Rs)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="col-sn">1</td>
+          <td class="topic">“Leadership & Managerial Skills, Management & Business Administration.”</td>
+          <td class="col-hsn">999294</td>
+          <td class="col-fee">478,000.00</td>
+          <td>New York & Los Angeles, (United State)</td>
+          <td>Sh. Sanjay Bharti Kumar, Managing Director</td>
+          <td>09–16 Sep 2025</td>
+          <td class="col-amt">478,000.00</td>
+        </tr>
+        <tr>
+          <td class="col-sn">2</td>
+          <td class="topic">“Emotional Intelligence for Effective Leadership & Work Life Balance”</td>
+          <td>999294</td>
+          <td class="col-fee">66,600.00</td>
+          <td>Manali, Himachal Pradesh, India</td>
+          <td>Sh. Pankaj Sharma, Dy. General Manager</td>
+          <td>22–23 Sep 2025</td>
+          <td class="col-amt">66,600.00</td>
+        </tr>
+        <tr>
+          <td class="col-sn">3</td>
+          <td class="topic">“Public Procurement, E‑Procurement, Govt. E‑Marketplace (GeM), PFMS & GST” under Capacity Building program</td>
+          <td>999294</td>
+          <td class="col-fee">66,600.00</td>
+          <td>Manali, Himachal Pradesh, India</td>
+          <td>Sh. Pranav Jha, Asstt. General Manager</td>
+          <td>22–23 Sep 2025</td>
+          <td class="col-amt">66,600.00</td>
+        </tr>
+        <tr>
+          <td class="col-sn">4</td>
+          <td class="topic">Book Keeping & Accounting, Accounting Standards & Strategy to Implement Accrual System of Accounting in Government Departments, Autonomous Bodies & PSUs.</td>
+          <td>999294</td>
+          <td class="col-fee">66,600.00</td>
+          <td>Dalhousie, Himachal Pradesh, India</td>
+          <td>Sh. C.S Tiwari, Senior Accountant</td>
+          <td>08–09 Sep 2025</td>
+          <td class="col-amt">66,600.00</td>
+        </tr>
+        <tr>
+          <td class="col-sn">5</td>
+          <td class="topic">“Systematic Problem Solving, Conflict Resolution and Change Management”</td>
+          <td>999294</td>
+          <td class="col-fee">66,600.00</td>
+          <td>Manali, Himachal Pradesh, India</td>
+          <td>Sh. Diwakar Vaish, Coordinator (HR)</td>
+          <td>22–23 Sep 2025</td>
+          <td class="col-amt">66,600.00</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <section class="totals">
+      <div class="inwords">
+        <b>Bill Amount In Words</b>
+        (Eight Lakhs Seventy Eight Thousand Three Hundred Ninety Two Only)
+      </div>
+      <div class="amounts" id="amountBox">
+        <div class="row-line"><div class="name">Total Amount Before Tax</div><div class="val" data-val="744400.00">744,400.00</div></div>
+        <div class="row-line"><div class="name">Add: IGST 18%</div><div class="val" data-val="133992.00">133,992.00</div></div>
+        <div class="row-line"><div class="name">Total Amount After Tax</div><div class="val" data-val="878392.00"><b>878,392.00</b></div></div>
+        <div class="row-line"><div class="name">Grand Total</div><div class="val"><b>878,392.00</b></div></div>
+      </div>
+    </section>
+
+    <section class="footer">
+      <div class="terms card">
+        <h3>Terms & Conditions (E.& O.E.)</h3>
+        <ol>
+          <li>You are required to send payment in advance before commencement of the program.</li>
+          <li>Subject to Ghaziabad, Uttar Pradesh jurisdiction only.</li>
+        </ol>
+      </div>
+      <div class="bank card">
+        <h3>Details For RTGS, NEFT & ECS Payment</h3>
+        <div class="grid">
+          <div>Beneficiary Name</div><div>National Institute Of Secretariat Training & Development</div>
+          <div>Bank Name</div><div>State Bank Of India</div>
+          <div>Branch</div><div>Greater Noida</div>
+          <div>Current A/C No.</div><div>43684980081</div>
+          <div>IFSC Code</div><div>SBIN0050830</div>
+          <div>MICR Code (9 Digit No.)</div><div>&mdash;</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="signature">
+      <img class="seal" src="pdf_image_1_2.png" alt="Seal"/>
+      <b>National Institute Of Secretariat Training & Development</b>
+    </div>
+  </div>
+
+  <script>
+    // Optional: Recalculate IGST if user edits pre-tax value in dev tools
+    (function(){
+      const box = document.getElementById('amountBox');
+      if(!box) return;
+      const [pre, igst, after] = box.querySelectorAll('.val');
+      const recalc = () => {
+        const preVal = parseFloat(pre.dataset.val || pre.textContent.replace(/[, ]/g,'')) || 0;
+        const igstVal = +(preVal * 0.18).toFixed(2);
+        const tot = +(preVal + igstVal).toFixed(2);
+        igst.textContent = igstVal.toLocaleString('en-IN', {minimumFractionDigits:2});
+        after.textContent = tot.toLocaleString('en-IN', {minimumFractionDigits:2});
+      };
+      // Uncomment to allow live editing via prompt
+      // window.editPreTax = () => { const n = +prompt('Enter pre-tax amount', pre.textContent.replace(/[, ]/g,'')); if(!isNaN(n)){ pre.dataset.val=n; pre.textContent=n.toLocaleString('en-IN',{minimumFractionDigits:2}); recalc(); } };
+      recalc();
+    })();
+  </script>
+</body>
+</html>
