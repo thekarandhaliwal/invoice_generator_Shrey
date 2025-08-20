@@ -225,51 +225,101 @@
   }
   .terms h3, .bank h3{margin:0 0 6px 0; font-size:13px; text-transform:uppercase}
 
-  /* Signature area with CSS simulated stamp */
-  .signature{
-    margin-top:10px;
-    position:relative;
-    min-height:28mm;
-    font-size:13px;
-    text-align:right;
-  }
-
-  /* Simulated round stamp using pseudo-elements */
-  .stamp {
-    position:absolute;
-    right:6mm;
-    bottom:6mm;
-    width:34mm;
-    height:34mm;
-    border-radius:50%;
-    border:2px solid var(--border);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:9px;
-    font-weight:700;
-    letter-spacing:0.8px;
-    transform:rotate(-6deg);
-    box-shadow: none;
-  }
-  .stamp::before{
-    content:""; width:60%; height:60%; border-radius:50%; border:1px solid var(--border); display:block; opacity:0.9;
-  }
-  .stamp .inner-text{position:absolute; text-align:center; width:100%;}
-  .stamp .inner-text small{display:block;font-weight:400;font-size:8px; margin-top:2px}
-
-  /* Print tweaks */
-  @media print {
-    body{background:#fff}
-    .sheet{margin:0; padding:0; width:100%; min-height:auto}
-    .stamp{box-shadow:none}
-  }
 
   /* Small helpers for numeric alignment */
   .r { text-align:right; }
   .c { text-align:center; }
 
 </style>
+
+  <style>
+    /* Unique prefixed styles */
+    .inv-container {
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      margin: 0;
+      padding: 20px;
+      color: #000;
+    }
+    .inv-box {
+      width: 100%;
+      border: 1px solid #000;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+    .inv-header {
+      text-align: right;
+      margin-bottom: 20px;
+    }
+    .inv-header table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .inv-header td {
+      /* padding: 5px;
+      text-align: right; */
+      border: none;
+    }
+    .inv-total {
+      font-weight: bold;
+    }
+    .inv-amount-words {
+      border: 1px solid #000;
+      border-left: none;
+      padding: 8px;
+      font-weight: bold;
+    }
+    .inv-grand-total {
+      border: 1px solid #000;
+      border-left: none;
+      text-align: right;
+      padding: 8px;
+      font-weight: bold;
+      border-right: none;
+    }
+    .inv-info {
+      width: 100%;
+      margin-top: 10px;
+      border-collapse: collapse;
+    }
+    .inv-info td {
+      padding: 6px;
+      font-weight: bold;
+    }
+    .inv-payment-details {
+      margin-top: 10px;
+      border: 1px solid #000;
+      border-collapse: collapse;
+      width: 100%;
+      border-right: none;
+      border-left: none;
+    }
+    .inv-payment-details th,
+    .inv-payment-details td {
+      /* border: 1px solid #000; */
+      padding: 6px;
+      text-align: left;
+      border-right: none;
+            border-left: none;
+
+    }
+    .inv-signature {
+      text-align: right;
+      margin-top: 40px;
+      font-weight: bold;
+    }
+    .inv-stamp {
+      margin-top: 10px;
+      text-align: right;
+    }
+    .inv-stamp img {
+      width: 150px;
+    }
+    .inv-footer {
+      margin-top: 20px;
+      font-size: 12px;
+    }
+  </style>
 </head>
 <body>
     <div class="invoice-tag">
@@ -317,6 +367,7 @@
     <section class="meta" aria-label="Invoice metadata">
       <div class="card">
         <h3>Billed To</h3>
+        <div style="margin-left: 100px;">
           <div>The Managing Director,</div>
           <div>Intelligent Communication Systems India Ltd.</div>
           <div>Administrative Building, 1st Floor, Above Post Office, Okhla Industrial Estate Phase-3, New Delhi - 110020</div>
@@ -324,6 +375,7 @@
           <div>+917814547606</div>
           <div>Email ID</div>
           <div>pankaj.sharma@icsil.in</div>
+          </div>
       </div>
 
       <div class="card">
@@ -342,7 +394,7 @@
     </div> -->
 
 
-    <div class="refstrip" aria-hidden="true">
+    <div class="refstrip" aria-hidden="true" style="margin-left: 80px; margin-right: 80px;">
     <div class="badge" style="float: left;">
         <strong>Ref No:</strong> Your Email Jul 28, 2025, 8:11 PM
     </div>
@@ -357,32 +409,32 @@
     <table role="table" aria-label="Invoice items">
       <thead>
         <tr>
-          <th class="col-sn c">S.N</th>
+          <th class="col-sn c" style="border-left:none ;">S.N</th>
           <th class="col-topic">Training Topic</th>
-          <th class="col-venue">Venue</th>
-          <th class="col-part">Participants</th>
-          <th class="col-date">Date</th>
-          <th class="col-hsn c">HSN Code</th>
-          <th class="col-fee r">Course fee Per Participant (Rs)</th>
-          <th class="col-amt r">Amount (Rs)</th>
+          <th class="col-venue" style="text-align: center;">Venue</th>
+          <th class="col-part" style="text-align: center;">Participants</th>
+          <th class="col-date" style="text-align: center;">Date</th>
+          <th class="col-hsn c" style="text-align: center;">HSN Code</th>
+          <th class="col-fee r" style="text-align: center;">Course fee Per Participant (Rs)</th>
+          <th class="col-amt r" style="text-align: center; border-right:none ;">Course Fee Amount (Rs)</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td class="c">1</td>
+          <td class="c" style="border-left:none ;">1</td>
           <td class="topic">“Leadership &amp; Managerial Skills, Management &amp; Business Administration.”</td>
           <td class="c">999294</td>
           <td class="r">478,000.00</td>
           <td>New York &amp; Los Angeles, (United State)</td>
           <td>Sh. Sanjay Bharti Kumar, Managing Director</td>
           <td class="c">09–16 Sep 2025</td>
-          <td class="r">478,000.00</td>
+          <td class="r" style="border-right:none ;">478,000.00</td>
         </tr>
       </tbody>
     </table>
 
     <!-- Totals -->
-    <section class="totals" aria-label="Totals">
+    <!-- <section class="totals" aria-label="Totals">
       <div class="inwords">
         <b>Bill Amount In Words</b>
         (Eight Lakhs Seventy Eight Thousand Three Hundred Ninety Two Only)
@@ -394,10 +446,10 @@
         <div class="row"><div class="label">Total Amount After Tax</div><div class="val r"><strong>878,392.00</strong></div></div>
         <div class="row"><div class="label">Grand Total</div><div class="val r"><strong>878,392.00</strong></div></div>
       </div>
-    </section>
+    </section> -->
 
     <!-- Footer: Terms and Bank details -->
-    <section class="footer" aria-label="Footer">
+    <!-- <section class="footer" aria-label="Footer">
       <div class="terms">
         <h3>Terms &amp; Conditions (E.&amp; O.E.)</h3>
         <ol>
@@ -417,21 +469,102 @@
           <div>MICR Code (9 Digit No.)</div><div>—</div>
         </div>
       </div>
-    </section>
+    </section> -->
 
-    <!-- Signature and simulated stamp -->
-    <div class="signature" aria-label="Signature">
-      <div style="font-weight:700">National Institute Of Secretariat Training &amp; Development</div>
 
-      <!-- simulated round stamp -->
-      <div class="stamp" aria-hidden="true" title="Simulated stamp">
-        <div class="inner-text">
-          N I S T D
-          <small>Authorized</small>
-        </div>
+  <!-- <div class="inv-container"> -->
+    <!-- <div class="inv-box"> -->
+      
+      <!-- Header Totals -->
+      <div class="inv-header">
+        <table>
+          <tr>
+            <!-- <td></td> -->
+            <td>Total Amount Before Tax</td>
+            <td>744400.00</td>
+          </tr>
+          <tr>
+            <!-- <td></td> -->
+            <td>Add: IGST 18%</td>
+            <td>133,992.00</td>
+          </tr>
+          <tr class="inv-total">
+            <!-- <td></td> -->
+            <td>Total Amount After Tax</td>
+            <td>878392.00</td>
+          </tr>
+        </table>
       </div>
-    </div>
 
+      <!-- Amount in Words + Grand Total -->
+      <table style="width:100%; border-collapse:collapse;">
+        <tr>
+          <td class="inv-amount-words" style="width:70%;">
+            Bill Amount in Words (Eight Lakhs Seventy Eight Thousand Three Hundred Ninety Two Only)
+          </td>
+          <td class="inv-grand-total" style="width:30%;">
+            Grand Total : 878392.00
+          </td>
+        </tr>
+      </table>
+
+
+
+    <section aria-label="Contact details" style="    margin-top: 10px;">
+        <div class="invoice-header">
+            <div>GSTIN No. 09ADEPA3952G3ZQ</div>
+            <div>Pan No. ADEPA3952G</div>
+        </div>
+    </section>
+      <!-- Payment Details -->
+      <table class="inv-payment-details">
+        <tr>
+          <th colspan="2">Details For RTGS, NEFT & ECS Payment</th>
+        </tr>
+        <tr>
+          <td>Beneficiary Name</td>
+          <td>National Institute Of Secretariat Training & Development</td>
+        </tr>
+        <tr>
+          <td>Bank Name</td>
+          <td>State Bank Of India</td>
+        </tr>
+        <tr>
+          <td>Branch</td>
+          <td>Greater Noida</td>
+        </tr>
+        <tr>
+          <td>Currant A/C No</td>
+          <td>43684980081</td>
+        </tr>
+        <tr>
+          <td>IFSC Code</td>
+          <td>SBIN0050830</td>
+        </tr>
+        <tr>
+          <td>MICR CODE (9 Digit No.)</td>
+          <td>110002774</td>
+        </tr>
+      </table>
+
+        <section style="margin: 0px 30px;">
+      <!-- Signature & Stamp -->
+      <div class="inv-signature">
+        National Institute Of Secretariat Training & Development
+      </div>
+      <div class="inv-stamp">
+        <div>(Authorized Signatory)</div>
+      </div>
+
+      <!-- Footer -->
+      <div class="inv-footer">
+        <p><b>Terms & Condition E.&O.E.1.</b></p>
+        <p>1. You are Required to Send Payment in Advance Before Commencement of the Program</p>
+        <p>2. Subject to 'Ghaziabad, Uttar Pradesh' Jurisdiction Only</p>
+      </div>
+</section>
+    <!-- </div> -->
+  <!-- </div> -->
   </div>
 </body>
 </html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Invoice</title>
+  <style>
+    /* Unique prefixed styles */
+    .inv-container {
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      margin: 0;
+      padding: 20px;
+      color: #000;
+    }
+    .inv-box {
+      width: 100%;
+      border: 1px solid #000;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+    .inv-header {
+      text-align: right;
+      margin-bottom: 20px;
+    }
+    .inv-header table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .inv-header td {
+      padding: 5px;
+      text-align: right;
+    }
+    .inv-total {
+      font-weight: bold;
+    }
+    .inv-amount-words {
+      border: 1px solid #000;
+      border-top: none;
+      padding: 8px;
+      font-weight: bold;
+    }
+    .inv-grand-total {
+      border: 1px solid #000;
+      border-left: none;
+      text-align: right;
+      padding: 8px;
+      font-weight: bold;
+    }
+    .inv-info {
+      width: 100%;
+      margin-top: 10px;
+      border-collapse: collapse;
+    }
+    .inv-info td {
+      padding: 6px;
+      font-weight: bold;
+    }
+    .inv-payment-details {
+      margin-top: 10px;
+      border: 1px solid #000;
+      border-collapse: collapse;
+      width: 100%;
+    }
+    .inv-payment-details th,
+    .inv-payment-details td {
+      border: 1px solid #000;
+      padding: 6px;
+      text-align: left;
+    }
+    .inv-signature {
+      text-align: right;
+      margin-top: 40px;
+      font-weight: bold;
+    }
+    .inv-stamp {
+      margin-top: 10px;
+      text-align: right;
+    }
+    .inv-stamp img {
+      width: 150px;
+    }
+    .inv-footer {
+      margin-top: 20px;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="inv-container">
+    <div class="inv-box">
+      
+      <!-- Header Totals -->
+      <div class="inv-header">
+        <table>
+          <tr>
+            <td></td>
+            <td>Total Amount Before Tax</td>
+            <td>744400.00</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>Add: IGST 18%</td>
+            <td>133,992.00</td>
+          </tr>
+          <tr class="inv-total">
+            <td></td>
+            <td>Total Amount After Tax</td>
+            <td>878392.00</td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- Amount in Words + Grand Total -->
+      <table style="width:100%; border-collapse:collapse;">
+        <tr>
+          <td class="inv-amount-words" style="width:70%;">
+            Bill Amount in Words (Eight Lakhs Seventy Eight Thousand Three Hundred Ninety Two Only)
+          </td>
+          <td class="inv-grand-total" style="width:30%;">
+            Grand Total : 878392.00
+          </td>
+        </tr>
+      </table>
+
+      <!-- GST & PAN -->
+      <table class="inv-info">
+        <tr>
+          <td>GSTIN No. 09ADEPA3952G3ZQ</td>
+          <td>Pan No. ADEPA3952G</td>
+        </tr>
+      </table>
+
+      <!-- Payment Details -->
+      <table class="inv-payment-details">
+        <tr>
+          <th colspan="2">Details For RTGS, NEFT & ECS Payment</th>
+        </tr>
+        <tr>
+          <td>Beneficiary Name</td>
+          <td>National Institute Of Secretariat Training & Development</td>
+        </tr>
+        <tr>
+          <td>Bank Name</td>
+          <td>State Bank Of India</td>
+        </tr>
+        <tr>
+          <td>Branch</td>
+          <td>Greater Noida</td>
+        </tr>
+        <tr>
+          <td>Currant A/C No</td>
+          <td>43684980081</td>
+        </tr>
+        <tr>
+          <td>IFSC Code</td>
+          <td>SBIN0050830</td>
+        </tr>
+        <tr>
+          <td>MICR CODE (9 Digit No.)</td>
+          <td>110002774</td>
+        </tr>
+      </table>
+
+      <!-- Signature & Stamp -->
+      <div class="inv-signature">
+        National Institute Of Secretariat Training & Development
+      </div>
+      <div class="inv-stamp">
+        <img src="stamp-placeholder.png" alt="Authorized Signatory Stamp">
+        <div>(Authorized Signatory)</div>
+      </div>
+
+      <!-- Footer -->
+      <div class="inv-footer">
+        <p><b>Terms & Condition E.&O.E.1.</b></p>
+        <p>1. You are Required to Send Payment in Advance Before Commencement of the Program</p>
+        <p>2. Subject to 'Ghaziabad, Uttar Pradesh' Jurisdiction Only</p>
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>
