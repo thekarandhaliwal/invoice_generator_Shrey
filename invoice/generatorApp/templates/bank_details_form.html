@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+  form {
+    width: 100%;
+    margin: 0 auto;
+    text-align: left;
+    /* padding-top: 50px; */
+}
+</style>
+<!-- bank_details_form.html -->
+<div class="container my-4">
+  <div class="card shadow-sm p-4">
+    <h4 class="mb-3">Enter Bank Details</h4>
+    <form method="POST" action="{% url 'bank_details_form' %}">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label class="form-label">Beneficiary Name</label>
+        <input type="text" name="beneficiary_name" class="form-control unique-bank-input" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Bank Name</label>
+        <input type="text" name="bank_name" class="form-control unique-bank-input" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Branch</label>
+        <input type="text" name="branch" class="form-control unique-bank-input" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Current A/C No</label>
+        <input type="text" name="account_number" class="form-control unique-bank-input" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">IFSC Code</label>
+        <input type="text" name="ifsc_code" class="form-control unique-bank-input" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">MICR Code (9 Digit)</label>
+        <input type="text" name="micr_code" class="form-control unique-bank-input">
+      </div>
+      <button type="submit" class="btn btn-primary">Save Details</button>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

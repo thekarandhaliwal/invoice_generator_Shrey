@@ -1,0 +1,717 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>NISTD — Tax Invoice</title>
+<style>
+  /* Page sizing for A4 print */
+  @page { size: A4; margin: 12mm; }
+  html,body { height:100%; margin:0; -webkit-print-color-adjust:exact; }
+  :root{
+    --ink:#000;
+    --muted:#444;
+    --paper:#fff;
+    --border: #000;
+  }
+
+  /* Base */
+  *{box-sizing:border-box}
+  body {
+    font-family: "Times New Roman", Times, serif;
+    color:var(--ink);
+    background:var(--paper);
+    font-size: 14px;
+    line-height: 1.45;
+    padding:0;
+    -webkit-font-smoothing:antialiased;
+    /* padding: 10px; */
+  }
+
+  /* Container sized to A4 content area with 12mm page margin accounted */
+  .sheet{
+    /* width:calc(210mm - 24mm); */
+    min-height:calc(297mm - 24mm);
+    /* margin:12mm auto; */
+    /* padding:8mm 8mm 10mm 8mm; */
+    background:var(--paper);
+    position:relative;
+    color:var(--ink);
+    border: 1px solid #000;
+    /* padding: 6mm; */
+    box-sizing: border-box;
+  }
+
+  /* Header — three columns: logo | institute | invoice tag */
+  /* .header{
+    display:grid;
+    grid-template-columns:28mm 1fr 52mm;
+    gap:6mm;
+    align-items:center;
+    border-bottom:2px solid #000;
+    padding-bottom:4mm;
+  }
+.header .logo {
+  width: 28mm;
+} */
+  /* .header {
+  display: table;
+  width: 100%;
+  border-bottom: 2px solid #000;
+  border-collapse: collapse;
+} */
+  /* Circular logo placeholder */
+  /* .logo{
+    width:28mm;
+    height:28mm;
+    border-radius:50%;
+    border:2px solid #000;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+    font-size:10px;
+    letter-spacing:0.6px;
+    text-align:center;
+  } */
+  /* .logo small{display:block;font-size:8px;font-weight:400;margin-top:2px} */
+
+  /* .inst{
+    text-align:center;
+  }
+  .inst h1{
+    margin:0;
+    font-size:18px; 
+    letter-spacing:0.2px;
+  }
+  .inst .iso{
+    margin-top:2px;
+    font-size:14px;
+  } */
+
+  
+.header {
+  display: table;
+  width: 100%;
+  border-bottom: 2px solid #000;
+  border-collapse: collapse;
+  /* margin-top: 4px; */
+}
+
+.header > div {
+  display: table-cell;
+  vertical-align: middle;
+  /* padding: 0 6mm; */
+}
+
+.header .logo {
+  width: 20mm;
+  text-align: left;
+      padding: 10px;
+}
+
+.header .inst {
+  text-align: center;
+}
+
+.header .seal {
+  width: 20mm;
+  text-align: right;
+}
+
+/* Your institute block styles */
+.inst h1 {
+  margin: 0;
+  font-size: 18px; /* tuned for PDF */
+  letter-spacing: 0.2px;
+}
+
+.inst .iso {
+  margin-top: 2px;
+  font-size: 14px;
+  /* color: var(--muted); */
+}
+
+  .invoice-tag{
+    text-align:right;
+    line-height:1;
+    margin: 10px 0px;
+  }
+  .invoice-tag .title{
+    font-size:22px;
+    font-weight:700;
+    letter-spacing:1px;
+    text-align: center;
+  }
+  .invoice-tag .gst{
+    margin-top:4px;
+    font-size:12.5px;
+  }
+
+  /* Contact lines */
+  /* .contact{
+    margin-top:6px;
+    font-size:13px;
+  } */
+  /* .contact p{margin:0 0 4px 0;font-weight:600} */
+  /* .contact .row{display:flex;gap:8mm;flex-wrap:wrap;font-size:13px;color:var(--muted)} */
+
+  /* Meta section (Billed To / Invoice Details) */
+  /* .meta{
+    display:grid;
+    grid-template-columns:1.2fr .8fr;
+    gap:8mm;
+  }
+  .card{
+    padding:6px;
+    font-size:13px;
+  }
+  .card h3{
+    margin:0 0 4px 0;
+    font-size:13px;
+    text-transform:uppercase;
+    letter-spacing:0.6px;
+  }
+  .card .grid{
+    display:grid;
+    grid-template-columns:26mm 1fr;
+    row-gap:3px;
+    column-gap:6px;
+    margin-top:6px;
+  }
+  .card .grid > div:first-child{font-weight:600} */
+
+
+  .meta {
+  display: table;
+  width: 100%;
+  /* border-spacing: 8mm; */
+}
+
+.meta > .card {
+  display: table-cell;
+  vertical-align: top;
+  width: 60%; /* 1.2fr equivalent */
+  padding: 6px;
+  font-size: 13px;
+}
+
+.meta > .card:last-child {
+  width: 40%; /* 0.8fr equivalent */
+}
+
+.card h3 {
+  margin: 0 0 4px 0;
+  font-size: 13px;
+  /* text-transform: uppercase; */
+  letter-spacing: 0.6px;
+}
+
+.meta-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 6px;
+}
+
+.meta-table td {
+  padding: 3px 6px;
+  font-size: 13px;
+  border: none;
+}
+
+.meta-table .label {
+  font-weight: 600;
+  width: 26mm; /* matches your grid-template-columns */
+}
+
+  /* Reference badges */
+  /* .refstrip{
+    display:flex;
+    gap:6mm;
+    margin-top:6px;
+    font-size:12.5px;
+  } */
+  /* .badge{
+    border:1px solid #000;
+    padding:4px 6px;
+    border-radius:3px;
+    font-size:12.5px;
+  } */
+
+  /* Table styles */
+  table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:6px;
+    font-size:13px;
+  }
+  table thead th{
+    background:#efefef;
+    font-weight:700;
+    padding:6px 6px;
+    border:1px solid #000;
+    text-align:left;
+  }
+  table tbody td{
+    padding:6px;
+    border:1px solid #000;
+    vertical-align:top;
+  }
+
+  /* Column widths tuned to match PDF look */
+  .col-sn{width:10mm;text-align:center}
+  .col-topic{width:65mm}
+  .col-hsn{width:20mm;text-align:center}
+  .col-fee{width:30mm;text-align:right}
+  .col-venue{width:40mm}
+  .col-part{width:40mm}
+  .col-date{width:28mm}
+  .col-amt{width:30mm;text-align:right}
+
+  /* ensure long text wraps nicely like PDF */
+  .topic{white-space:pre-line; word-wrap:break-word}
+
+  /* Totals area */
+  .totals{
+    margin-top:8px;
+    display:grid;
+    grid-template-columns:1fr 72mm;
+    gap:8mm;
+  }
+  .inwords{
+    border:1px solid #000;
+    padding:6px;
+    font-size:13px;
+  }
+  .inwords b{display:block;margin-bottom:6px}
+  .amounts{
+    border:1px solid #000;
+    font-size:13px;
+  }
+  .amounts .row{
+    display:grid;
+    grid-template-columns:1fr 28mm;
+    border-bottom:1px solid #000;
+    padding:6px;
+    align-items:center;
+  }
+  .amounts .row:last-child{border-bottom:none;font-weight:700}
+  .amounts .row .label{font-weight:600}
+  .amounts .row .val{text-align:right}
+
+  /* Footer — terms & bank details */
+  .footer{
+    margin-top:8px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8mm;
+    font-size:13px;
+  }
+  .terms{border:1px solid #000; padding:6px}
+  .bank{border:1px solid #000; padding:6px}
+  .bank .grid{
+    display:grid;
+    grid-template-columns:34mm 1fr;
+    row-gap:4px;
+    column-gap:6px;
+  }
+  .terms h3, .bank h3{margin:0 0 6px 0; font-size:13px; text-transform:uppercase}
+
+
+  /* Small helpers for numeric alignment */
+  .r { text-align:right; }
+  .c { text-align:center; }
+
+</style>
+
+  <style>
+    /* Unique prefixed styles */
+    .inv-container {
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      margin: 0;
+      padding: 20px;
+      color: #000;
+    }
+    .inv-box {
+      width: 100%;
+      border: 1px solid #000;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+    .inv-header {
+      text-align: right;
+      margin-bottom: 20px;
+    }
+    .inv-header table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .inv-header td {
+      /* padding: 5px;
+      text-align: right; */
+      border: none;
+    }
+    .inv-total {
+      font-weight: bold;
+    }
+    .inv-amount-words {
+      border: 1px solid #000;
+      border-left: none;
+      padding: 8px;
+      font-weight: bold;
+    }
+    .inv-grand-total {
+      border: 1px solid #000;
+      border-left: none;
+      text-align: right;
+      padding: 8px;
+      font-weight: bold;
+      border-right: none;
+    }
+    .inv-info {
+      width: 100%;
+      margin-top: 10px;
+      border-collapse: collapse;
+    }
+    .inv-info td {
+      padding: 6px;
+      font-weight: bold;
+    }
+    .inv-payment-details {
+      margin-top: 10px;
+      border: 1px solid #000;
+      border-collapse: collapse;
+      width: 100%;
+      border-right: none;
+      border-left: none;
+    }
+    .inv-payment-details th,
+    .inv-payment-details td {
+      /* border: 1px solid #000; */
+      padding: 6px;
+      text-align: left;
+      border-right: none;
+            border-left: none;
+
+    }
+    .inv-signature {
+      text-align: right;
+      margin-top: 40px;
+      font-weight: bold;
+    }
+    .inv-stamp {
+      margin-top: 10px;
+      text-align: right;
+    }
+    .inv-stamp img {
+      width: 150px;
+    }
+    .inv-footer {
+      margin-top: 20px;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+    <div class="invoice-tag">
+        <div class="title">TAX INVOICE</div>
+    </div>
+  <div class="sheet" role="main" aria-label="Invoice">
+
+    <!-- Header -->
+    <header class="header" aria-hidden="false">
+      <div class="logo" aria-label="Logo placeholder">
+        <!-- <div style="line-height:1">
+          N I S T D
+          <small>Institute</small>
+        </div> -->
+        <img class="seal" src="/static/assets/images/1.png" alt="Seal"/>
+                <!-- <img class="seal" src="1.png" alt="Seal"/> -->
+
+      </div>
+
+      <div class="inst">
+        <h1>National Institute Of Secretariat Training &amp; Development</h1>
+        <div class="iso">(An ISO 9001:2015 Institute)</div>
+            <div class="iso">Plot No B-11C, Inderprastha, NCR New Delhi, Ghaziabad-201102, India </div>
+            <div class="iso">Ph. +91-120- 2682110, +91-120-2682111, Fax No:-+91-120-2682109, WhatsApp no. +919811094923 </div>
+            <div class="iso">E Mail:-info@nistd.in, infonistd@gmail.com, Website:-www.nistd.in </div>
+      </div>
+        <div class="seal">
+    <!-- If you need another logo on right side -->
+    <!-- <img src="/static/assets/images/1.png" alt="Seal"/> -->
+  </div>
+    </header>
+
+    <!-- Contact -->
+    <!-- <section class="contact" aria-label="Contact details">
+        <div class="col-md-4">
+            <h5>Invoice No. 2-2025</h5><h5>Date: 29-July-2025</h5>
+        </div>
+    </section> -->
+
+    <section aria-label="Contact details" style="border-bottom: 2px solid #000;">
+        <div class="invoice-header" style="margin:3px;">
+            <div style="float: left;">Invoice No. {{ invoice_no }}</div>
+            <div style="float: right;">Date: {{ invoice_date }}</div>
+            <div style="clear: both;"></div>
+        </div>
+    </section>
+
+    <!-- Meta -->
+    <!-- <section class="meta" aria-label="Invoice metadata">
+      <div class="card">
+        <h3>Billed To</h3>
+        <div style="margin-left: 100px;">
+          <div>The Managing Director,</div>
+          <div>{{ client_name }}</div>
+          <div>{{ client_address }}</div>
+          <div>Contact No.</div>
+          <div>{{ contact_no }}</div>
+          <div>Email ID</div>
+          <div>{{ email }}</div>
+          </div>
+      </div>
+
+      <div class="card">
+        <h3>Invoice Details</h3>
+        <div class="grid">
+          <div>GSTIN :- </div>
+          <div>{{ gstin }}</div>
+        </div>
+      </div>
+    </section> -->
+
+    <section class="meta" aria-label="Invoice metadata">
+      <div class="card">
+        <h3>Billed To,</h3>
+        <div style="margin-left: 100px;">
+          <div>The Managing Director,</div>
+          <div>{{ client_name }}</div>
+          <div>{{ client_address }}</div>
+          <div>Contact No.</div>
+          <div>{{ contact_no }}</div>
+          <div>Email ID</div>
+          <div>{{ email }}</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Invoice Details</h3>
+        <table class="meta-table">
+          <tr>
+            <td class="label">GSTIN No.:-</td>
+            <td>{{ gstin }}</td>
+          </tr>
+        </table>
+      </div>
+    </section>
+
+    <!-- Reference strip -->
+    <!-- <div class="refstrip" aria-hidden="true">
+      <div class="badge"><strong>Ref No:</strong> Your Email Jul 28, 2025, 8:11 PM</div>
+      <div class="badge"><strong>Date:</strong> 28/07/2025</div>
+    </div> -->
+
+
+    <div class="refstrip" aria-hidden="true" style="margin-left: 80px; margin-right: 80px;">
+    <div class="badge" style="float: left;">
+        <strong>Ref No:</strong> {{ ref_no }} 
+    </div>
+    <div class="badge" style="float: right;">
+        <strong>Date:</strong> {{ ref_date }}
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+
+    <!-- Table -->
+    <table role="table" aria-label="Invoice items">
+      <thead>
+        <tr>
+          <th class="col-sn c" style="border-left:none ;">S.N</th>
+          <th class="col-topic">Training Topic</th>
+          <th class="col-venue" style="text-align: center;">Venue</th>
+          <th class="col-part" style="text-align: center;">Participants</th>
+          <th class="col-date" style="text-align: center;">Date</th>
+          <th class="col-hsn c" style="text-align: center;">HSN Code</th>
+          <th class="col-fee r" style="text-align: center;">Course fee Per Participant (Rs)</th>
+          <th class="col-amt r" style="text-align: center; border-right:none ;">Course Fee Amount (Rs)</th>
+        </tr>
+      </thead>
+      <!-- <tbody>
+        <tr>
+          <td class="c" style="border-left:none ;">1</td>
+          <td class="topic">{{ training_topic }}</td>
+          <td class="c">{{ venue }}</td>
+          <td class="r">{{ participants }}</td>
+          <td>{{ training_date }}</td>
+          <td>{{ hsn_code }}</td>
+          <td class="c">{{ fee_per_participant }}</td>
+          <td class="r" style="border-right:none ;">{{ fee_amount }}</td>
+        </tr>
+      </tbody> -->
+        <tbody>
+    {% for t in trainings %}
+    <tr>
+      <td style="border-left:none ;">{{ t.sn }}</td>
+      <td>{{ t.topic }}</td>
+      <td>{{ t.venue }}</td>
+      <td>{{ t.participants }}</td>
+      <td>{{ t.date }}</td>
+      <td>{{ t.hsn }}</td>
+      <td>{{ t.fee_per }}</td>
+      <td style="border-right:none ;">{{ t.fee_amount }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+
+    </table>
+
+    <!-- Totals -->
+    <!-- <section class="totals" aria-label="Totals">
+      <div class="inwords">
+        <b>Bill Amount In Words</b>
+        (Eight Lakhs Seventy Eight Thousand Three Hundred Ninety Two Only)
+      </div>
+
+      <div class="amounts" aria-hidden="false">
+        <div class="row"><div class="label">Total Amount Before Tax</div><div class="val r">744,400.00</div></div>
+        <div class="row"><div class="label">Add: IGST 18%</div><div class="val r">133,992.00</div></div>
+        <div class="row"><div class="label">Total Amount After Tax</div><div class="val r"><strong>878,392.00</strong></div></div>
+        <div class="row"><div class="label">Grand Total</div><div class="val r"><strong>878,392.00</strong></div></div>
+      </div>
+    </section> -->
+
+    <!-- Footer: Terms and Bank details -->
+    <!-- <section class="footer" aria-label="Footer">
+      <div class="terms">
+        <h3>Terms &amp; Conditions (E.&amp; O.E.)</h3>
+        <ol>
+          <li>You are required to send payment in advance before commencement of the program.</li>
+          <li>Subject to Ghaziabad, Uttar Pradesh jurisdiction only.</li>
+        </ol>
+      </div>
+
+      <div class="bank">
+        <h3>Details For RTGS, NEFT &amp; ECS Payment</h3>
+        <div class="grid">
+          <div>Beneficiary Name</div><div>National Institute Of Secretariat Training &amp; Development</div>
+          <div>Bank Name</div><div>State Bank Of India</div>
+          <div>Branch</div><div>Greater Noida</div>
+          <div>Current A/C No.</div><div>43684980081</div>
+          <div>IFSC Code</div><div>SBIN0050830</div>
+          <div>MICR Code (9 Digit No.)</div><div>—</div>
+        </div>
+      </div>
+    </section> -->
+
+
+  <!-- <div class="inv-container"> -->
+    <!-- <div class="inv-box"> -->
+      
+      <!-- Header Totals -->
+      <div class="inv-header">
+        <table>
+          <tr>
+            <!-- <td></td> -->
+            <td>Total Amount Before Tax</td>
+            <td>{{ total_before_tax }}</td>
+          </tr>
+          <tr>
+            <!-- <td></td> -->
+            <td>Add: IGST 18%</td>
+            <td>{{ igst }}</td>
+          </tr>
+          <tr class="inv-total">
+            <!-- <td></td> -->
+            <td>Total Amount After Tax</td>
+            <td>{{ total_after_tax }}</td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- Amount in Words + Grand Total -->
+      <table style="width:100%; border-collapse:collapse;">
+        <tr>
+          <td class="inv-amount-words" style="width:70%;">
+             {{ amount_words }}
+          </td>
+          <td class="inv-grand-total" style="width:30%;">
+            Grand Total : {{ grand_total }}
+          </td>
+        </tr>
+      </table>
+
+
+
+    <section aria-label="Contact details" style="    margin-top: 10px;">
+        <div class="invoice-header">
+            <div>GSTIN No. {{ gstin }}</div>
+            <div>Pan No. </div>
+        </div>
+    </section>
+      <!-- Payment Details -->
+      <!-- <table class="inv-payment-details">
+        <tr>
+          <th colspan="2">Details For RTGS, NEFT & ECS Payment</th>
+        </tr>
+        <tr>
+          <td>Beneficiary Name</td>
+          <td>National Institute Of Secretariat Training & Development</td>
+        </tr>
+        <tr>
+          <td>Bank Name</td>
+          <td>State Bank Of India</td>
+        </tr>
+        <tr>
+          <td>Branch</td>
+          <td>Greater Noida</td>
+        </tr>
+        <tr>
+          <td>Currant A/C No</td>
+          <td>43684980081</td>
+        </tr>
+        <tr>
+          <td>IFSC Code</td>
+          <td>SBIN0050830</td>
+        </tr>
+        <tr>
+          <td>MICR CODE (9 Digit No.)</td>
+          <td>110002774</td>
+        </tr>
+      </table> -->
+
+          {% if bank %}
+        <table>
+            <tr><td style="border-left:none;">Beneficiary Name</td><td style="border-right:none;">{{ bank.beneficiary_name }}</td></tr>
+            <tr><td style="border-left:none;">Bank Name</td><td style="border-right:none;">{{ bank.bank_name }}</td></tr>
+            <tr><td style="border-left:none;">Branch</td><td style="border-right:none;">{{ bank.branch }}</td></tr>
+            <tr><td style="border-left:none;">Account Number</td><td style="border-right:none;">{{ bank.account_number }}</td></tr>
+            <tr><td style="border-left:none;">IFSC Code</td><td style="border-right:none;">{{ bank.ifsc_code }}</td></tr>
+            <tr><td style="border-left:none;">MICR Code</td><td style="border-right:none;">{{ bank.micr_code }}</td></tr>
+        </table>
+      {% endif %}
+
+        <section style="margin: 0px 30px;">
+      <!-- Signature & Stamp -->
+      <div class="inv-signature">
+        National Institute Of Secretariat Training & Development
+      </div>
+      <div class="inv-stamp">
+        <div>(Authorized Signatory)</div>
+      </div>
+
+      <!-- Footer -->
+      <div class="inv-footer">
+        <p><b>Terms & Condition E.&O.E.1.</b></p>
+        <p>1. You are Required to Send Payment in Advance Before Commencement of the Program</p>
+        <p>2. Subject to 'Ghaziabad, Uttar Pradesh' Jurisdiction Only</p>
+      </div>
+</section>
+    <!-- </div> -->
+  <!-- </div> -->
+  </div>
+</body>
+</html>

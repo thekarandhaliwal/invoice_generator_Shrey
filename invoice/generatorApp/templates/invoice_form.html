@@ -1,0 +1,401 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: #f5f7fa;
+    }
+    .inv-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      /* max-width: 900px; */
+      margin: 40px auto;
+    }
+    .inv-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #0d6efd;
+      text-align: center;
+      margin-bottom: 25px;
+    }
+    .inv-section-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin: 20px 0 10px;
+      color: #0d6efd;
+      border-bottom: 2px solid #0d6efd;
+      display: inline-block;
+      padding-bottom: 3px;
+    }
+    .inv-label {
+      font-weight: 600;
+      color: #333;
+    }
+    .inv-btn {
+      border-radius: 30px;
+      padding: 10px 40px;
+      font-weight: 600;
+    }
+    form {
+    width:100% !important;
+    margin: 0 auto;
+    text-align: left;
+    padding-top: 0px;
+    }
+  </style>
+
+
+<div class="container">
+  <div class="inv-card">
+    <h2 class="inv-title">Invoice Form</h2>
+    
+    <form id="inv-form" method="POST">
+        {% csrf_token %}
+      <!-- Invoice Info -->
+      <div class="inv-section-title">Invoice Information</div>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="inv-label">Invoice No.</label>
+          <input type="text" class="form-control inv-input" name="invoice_no" value="2-2025" placeholder="e.g. 2-2025" required>
+        </div>
+        <div class="col-md-6">
+          <label class="inv-label">Invoice Date</label>
+          <input type="date" class="form-control inv-input" name="invoice_date" value="2025-08-25" required>
+        </div>
+      </div>
+      
+      <!-- Billed To -->
+      <div class="inv-section-title">Billed To</div>
+      <div class="mb-3">
+        <label class="inv-label">Client Name & Designation</label>
+        <input type="text" class="form-control inv-input" name="client_name" placeholder="The Managing Director" value="Intelligent Communication Systems India Ltd." required>
+      </div>
+      <div class="mb-3">
+        <label class="inv-label">Client Address</label>
+        <textarea class="form-control inv-input" rows="3" name="client_address"  placeholder="Enter client address..." required>This is the fixed value that will appear in the textarea.</textarea>
+      </div>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="inv-label">Contact No.</label>
+          <input type="tel" class="form-control inv-input" name="contact_no" value="+917814547606" placeholder="+91XXXXXXXXXX" required>
+        </div>
+        <div class="col-md-6">
+          <label class="inv-label">Email ID</label>
+          <input type="email" class="form-control inv-input" name="email" value="karanpret0@gmail.com" placeholder="example@domain.com" required>
+        </div>
+      </div>
+      
+      <!-- Invoice Details -->
+      <div class="inv-section-title">Invoice Details</div>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="inv-label">GSTIN</label>
+          <input type="text" class="form-control inv-input" name="gstin" value="09ADEPA3952G3ZQ" placeholder="Enter GSTIN" required>
+        </div>
+        <div class="col-md-6">
+          <label class="inv-label">PAN No.</label>
+          <input type="text" class="form-control inv-input" name="gstin" value="ADEPA3952G" placeholder="Enter PAN" required>
+        </div>
+        <div class="col-md-6">
+          <label class="inv-label">Ref No.</label>
+          <input type="text" class="form-control inv-input" name="ref_no" value="54546815" placeholder="Reference Number" required>
+        </div>
+        <div class="col-md-6">
+          <label class="inv-label">Ref Date</label>
+          <input type="date" class="form-control inv-input" name="ref_date" value="2025-08-25" required>
+        </div>
+      </div>
+          <!-- Training Details -->
+      <div class="inv-section-title">Training Details</div>
+      <!-- <div class="table-responsive">
+        <table class="table table-bordered inv-table text-center align-middle">
+          <thead>
+            <tr>
+              <th>S.N</th>
+              <th>Training Topic</th>
+              <th>Venue</th>
+              <th>Participants</th>
+              <th>Date</th>
+              <th>HSN Code</th>
+              <th>Course Fee Per Participant (Rs)</th>
+              <th>Course Fee Amount (Rs)</th>
+            </tr>
+          </thead>
+          <tbody id="inv-training-body">
+            <tr>
+              <td><input type="number" class="form-control" name="sn[]" value="1" required></td>
+              <td><input type="text" class="form-control" name="topic[]" value="Leadership & Managerial Skills, Management & Business Administration." required></td>
+              <td><input type="text" class="form-control" name="venue[]" value="New York & Los Angeles, (United State)" required></td>
+              <td><input type="text" class="form-control" name="participants[]" value="Sh. Sanjay Bharti Kumar, Managing Director" required></td>
+              <td><input type="text" class="form-control" name="date[]" value="09–16 Sep 2025" required></td>
+              <td><input type="text" class="form-control" name="hsn[]" value="999294" required></td>
+              <td><input type="number" class="form-control fee-per" name="fee_per[]" value="478000" required></td>
+              <td><input type="number" class="form-control fee-amount" name="fee_amount[]" value="478000" required></td>
+            </tr>
+          </tbody>
+        </table>
+      </div> -->
+
+      <div class="form-group">
+  <div class="card-body">
+    <h3 style="border-bottom: 1px solid rgb(255 4 4 / 10%);">Training Details</h3>
+
+    <div style="overflow-x:auto;">
+      <!-- Table Header -->
+      <div style="min-width: 1200px; display: flex; gap: 15px; font-weight: bold; margin-bottom: 10px;">
+        <div style="flex: 0 0 3%;">S.N</div>
+        <div style="flex: 0 0 20%;">Training Topic</div>
+        <div style="flex: 0 0 15%;">Venue</div>
+        <div style="flex: 0 0 10%;">Participants</div>
+        <div style="flex: 0 0 12%;">Date</div>
+        <div style="flex: 0 0 10%;">HSN Code</div>
+        <div style="flex: 0 0 15%;">Course Fee / Participant</div>
+        <div style="flex: 0 0 15%;">Course Fee Amount</div>
+      </div>
+
+      <!-- Rows -->
+      <div id="trainingContainer">
+        <div class="training-row" style="min-width: 1200px; display: flex; gap: 15px; margin-bottom: 10px;">
+
+          <div style="flex: 0 0 3%;">
+            <input type="number" class="form-control" name="sn[]" value="1" readonly>
+          </div>
+          <div style="flex: 0 0 20%;">
+            <input type="text" class="form-control" name="training_topic[]" value="Leadership & Managerial Skills,
+Management & Business
+Administration." placeholder="Enter Topic">
+          </div>
+          <div style="flex: 0 0 15%;">
+            <input type="text" class="form-control" name="venue[]" value="New York &
+Los Angeles,
+(United
+State)" placeholder="Enter Venue">
+          </div>
+          <div style="flex: 0 0 10%;">
+            <input type="text" class="form-control" name="participants[]" value="Sh. Sanjay Bharti
+Kumar
+Managing
+Director" placeholder="Participants">
+          </div>
+          <div style="flex: 0 0 12%;">
+            <input type="date" class="form-control" value="2025-08-25" name="training_date[]">
+          </div>
+          <div style="flex: 0 0 10%;">
+            <input type="text" class="form-control" name="hsn_code[]" value="999294" placeholder="HSN">
+          </div>
+          <div style="flex: 0 0 15%;">
+            <input type="number" class="form-control fee-per" name="course_fee_per_participant[]" value="478000.00" placeholder="0" oninput="updateTrainingAmount(this)">
+          </div>
+          <div style="flex: 0 0 15%;">
+            <input type="number" class="form-control fee-amount" name="course_fee_amount[]" value="478000" placeholder="0" readonly>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group mt-2">
+      <button type="button" class="btn btn-secondary" style="width:50px;" id="addTrainingRow">+</button>
+      <button type="button" class="btn btn-secondary" style="width:50px;" id="removeTrainingRow">-</button>
+    </div>
+  </div>
+</div>
+
+
+      <!-- Add row button -->
+      <div class="text-end mb-3">
+        <button type="button" class="btn btn-outline-primary btn-sm" onclick="addRow()">+ Add Row</button>
+      </div>
+
+      <!-- Summary Section -->
+      <div class="inv-section-title">Invoice Summary</div>
+      <div class="inv-summary">
+        <div class="row mb-2">
+          <div class="col-md-6"><label>Total Amount Before Tax:</label></div>
+          <div class="col-md-6 text-end"><span id="total-before-tax">0.00</span></div>
+        </div>
+        <div class="row mb-2">
+          <div class="col-md-6"><label>Add: IGST 18%:</label></div>
+          <div class="col-md-6 text-end"><span id="igst">0.00</span></div>
+        </div>
+        <div class="row mb-2">
+          <div class="col-md-6"><label>Total Amount After Tax:</label></div>
+          <div class="col-md-6 text-end"><span id="total-after-tax">0.00</span></div>
+        </div>
+        <div class="row mb-2">
+          <div class="col-md-6"><label>Bill Amount in Words:</label></div>
+          <div class="col-md-6 text-end"><span id="amount-words">-</span></div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-md-6"><label>Grand Total:</label></div>
+          <div class="col-md-6 text-end fw-bold text-success"><span id="grand-total">0.00</span></div>
+        </div>
+      </div>
+      
+      <div class="container my-4">
+        <div class="card shadow-sm p-4">
+          <h4 class="mb-3">Details For RTGS, NEFT & ECS Payment</h4>
+          <table class="table table-bordered unique-bank-table">
+            <tbody>
+              <tr>
+                <th>Beneficiary Name</th>
+                <td>{{ bank.beneficiary_name }}</td>
+              </tr>
+              <tr>
+                <th>Bank Name</th>
+                <td>{{ bank.bank_name }}</td>
+              </tr>
+              <tr>
+                <th>Branch</th>
+                <td>{{ bank.branch }}</td>
+              </tr>
+              <tr>
+                <th>Current A/C No</th>
+                <td>{{ bank.account_number }}</td>
+              </tr>
+              <tr>
+                <th>IFSC Code</th>
+                <td>{{ bank.ifsc_code }}</td>
+              </tr>
+              <tr>
+                <th>MICR Code</th>
+                <td>{{ bank.micr_code }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+
+      <!-- Submit -->
+      <div class="text-center mt-4">
+        <button type="submit" class="btn btn-primary inv-btn">Submit Invoice</button>
+      </div>
+      
+    </form>
+  </div>
+</div>
+
+<!-- Bootstrap JS + Validation -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+function updateTrainingAmount(input) {
+  const row = input.closest('.training-row');
+  const feePer = row.querySelector('.fee-per').value || 0;
+  const participants = row.querySelector('input[name="participants[]"]').value || 0;
+  const feeAmount = row.querySelector('.fee-amount');
+  feeAmount.value = parseFloat(feePer) * parseFloat(participants);
+}
+
+// Add Row
+document.getElementById('addTrainingRow').addEventListener('click', function() {
+  const container = document.getElementById('trainingContainer');
+  const rows = container.getElementsByClassName('training-row');
+  const lastRow = rows[rows.length - 1];
+  const newRow = lastRow.cloneNode(true);
+
+  // reset values
+  newRow.querySelectorAll('input').forEach(input => {
+    if (input.type !== "number" || input.name === "sn[]") input.value = '';
+  });
+
+  // update S.N
+  newRow.querySelector('input[name="sn[]"]').value = rows.length + 1;
+
+  container.appendChild(newRow);
+});
+
+// Remove Row
+document.getElementById('removeTrainingRow').addEventListener('click', function() {
+  const container = document.getElementById('trainingContainer');
+  const rows = container.getElementsByClassName('training-row');
+  if (rows.length > 1) {
+    rows[rows.length - 1].remove();
+  }
+});
+</script>
+
+
+<script>
+  // Add new row dynamically
+  // function addRow() {
+  //   const tbody = document.getElementById("inv-training-body");
+  //   const row = document.createElement("tr");
+  //   row.innerHTML = `
+  //     <td><input type="number" class="form-control" name="sn[]" required></td>
+  //     <td><input type="text" class="form-control" name="topic[]" required></td>
+  //     <td><input type="text" class="form-control" name="venue[]" required></td>
+  //     <td><input type="text" class="form-control" name="participants[]" required></td>
+  //     <td><input type="text" class="form-control" name="date[]" required></td>
+  //     <td><input type="text" class="form-control" name="hsn[]" required></td>
+  //     <td><input type="number" class="form-control fee-per" name="fee_per[]" required></td>
+  //     <td><input type="number" class="form-control fee-amount" name="fee_amount[]" required></td>
+  //   `;
+  //   tbody.appendChild(row);
+  //   attachEvents();
+  // }
+
+  
+  // Attach calculation events
+  function attachEvents() {
+    document.querySelectorAll(".fee-per, .fee-amount").forEach(el => {
+      el.addEventListener("input", calculateTotals);
+    });
+  }
+
+  // Convert number to words (simplified)
+  function numberToWords(num) {
+    const a = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten',
+               'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen',
+               'Seventeen', 'Eighteen', 'Nineteen'];
+    const b = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+    
+    function inWords (n) {
+      if (n < 20) return a[n];
+      if (n < 100) return b[Math.floor(n / 10)] + (n % 10 ? ' ' + a[n % 10] : '');
+      if (n < 1000) return a[Math.floor(n / 100)] + ' Hundred ' + (n % 100 ? inWords(n % 100) : '');
+      if (n < 100000) return inWords(Math.floor(n / 1000)) + ' Thousand ' + (n % 1000 ? inWords(n % 1000) : '');
+      if (n < 10000000) return inWords(Math.floor(n / 100000)) + ' Lakh ' + (n % 100000 ? inWords(n % 100000) : '');
+      return n;
+    }
+    return inWords(num).trim() + " Only";
+  }
+
+  // Calculate totals
+  function calculateTotals() {
+    let totalBefore = 0;
+    document.querySelectorAll(".fee-amount").forEach(el => {
+      totalBefore += parseFloat(el.value) || 0;
+    });
+
+    let igst = totalBefore * 0.18;
+    let totalAfter = totalBefore + igst;
+
+    document.getElementById("total-before-tax").textContent = totalBefore.toLocaleString("en-IN", {minimumFractionDigits:2});
+    document.getElementById("igst").textContent = igst.toLocaleString("en-IN", {minimumFractionDigits:2});
+    document.getElementById("total-after-tax").textContent = totalAfter.toLocaleString("en-IN", {minimumFractionDigits:2});
+    document.getElementById("grand-total").textContent = totalAfter.toLocaleString("en-IN", {minimumFractionDigits:2});
+    document.getElementById("amount-words").textContent = numberToWords(Math.round(totalAfter));
+  }
+
+  // Init
+  attachEvents();
+  calculateTotals();
+
+  // Form submission
+  document.getElementById("inv-form").addEventListener("submit", function(e) {
+    //e.preventDefault();
+    //alert("Invoice submitted successfully!");
+  });
+</script>
+
+
+
+
+{% endblock %}
