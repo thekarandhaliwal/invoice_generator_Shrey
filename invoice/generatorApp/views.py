@@ -73,34 +73,45 @@ def invoice_view(request):
         # fee_per_participant = request.POST.get("fee_per_participant")
         # fee_amount = request.POST.get("fee_amount")
 
-        training_topics = request.POST.getlist("training_topic[]")
+        sn_list = request.POST.getlist("sn[]")
+        topics = request.POST.getlist("training_topic[]")
         venues = request.POST.getlist("venue[]")
-        participants_list = request.POST.getlist("participants[]")
-        training_dates = request.POST.getlist("training_date[]")
+        participants = request.POST.getlist("participants[]")
+        dates = request.POST.getlist("training_date[]")
         hsn_codes = request.POST.getlist("hsn_code[]")
-        fees_per_participant = request.POST.getlist("course_fee_per_participant[]")
-        fees_amounts = request.POST.getlist("course_fee_amount[]")
+        fee_per_list = request.POST.getlist("course_fee_per_participant[]")
+        fee_amount_list = request.POST.getlist("course_fee_amount[]")
 
-        # combine into rows
-        trainings = []
-        for i in range(len(training_topics)):
-            trainings.append({
-                "sn": i+1,
-                "topic": training_topics[i],
+        # Build rows for template
+        training_rows = []
+        total_before_tax = 0
+        for i in range(len(sn_list)):
+            row = {
+                "sn": sn_list[i],
+                "topic": topics[i],
                 "venue": venues[i],
-                "participants": participants_list[i],
-                "date": training_dates[i],
+                "participants": participants[i],
+                "date": dates[i],
                 "hsn": hsn_codes[i],
-                "fee_per": fees_per_participant[i],
-                "fee_amount": fees_amounts[i],
-            })
+                "fee_per": fee_per_list[i],
+                "fee_amount": fee_amount_list[i],
+            }
+            training_rows.append(row)
+            try:
+                total_before_tax += float(fee_amount_list[i] or 0)
+            except:
+                pass
+
+        # Tax calculations
+        igst = total_before_tax * 0.18
+        total_after_tax = total_before_tax + igst
 
 
-        total_before_tax = request.POST.get("total_before_tax")
-        igst = request.POST.get("igst")
-        total_after_tax = request.POST.get("total_after_tax")
-        amount_words = request.POST.get("amount_words")
-        grand_total = request.POST.get("grand_total")
+        # total_before_tax = request.POST.get("total_before_tax")
+        # igst = request.POST.get("igst")
+        # total_after_tax = request.POST.get("total_after_tax")
+        # amount_words = request.POST.get("amount_words")
+        # grand_total = request.POST.get("grand_total")
 
         # context = {
         #     "invoice_no": invoice_no,
@@ -141,13 +152,17 @@ def invoice_view(request):
             "ref_no": ref_no,
             "ref_date": ref_date,
 
-            "trainings": trainings,  # 👈 now loop in template
-
-            "total_before_tax": request.POST.get("total_before_tax"),
-            "igst": request.POST.get("igst"),
-            "total_after_tax": request.POST.get("total_after_tax"),
-            "amount_words": request.POST.get("amount_words"),
-            "grand_total": request.POST.get("grand_total"),
+            # "trainings": trainings,  # 👈 now loop in template
+            "trainings": training_rows,
+            "total_before_tax": f"{total_before_tax:,.2f}",
+            "igst": f"{igst:,.2f}",
+            "total_after_tax": f"{total_after_tax:,.2f}",
+            "grand_total": f"{total_after_tax:,.2f}",
+            # "total_before_tax": request.POST.get("total_before_tax"),
+            # "igst": request.POST.get("igst"),
+            # "total_after_tax": request.POST.get("total_after_tax"),
+            # "amount_words": request.POST.get("amount_words"),
+            # "grand_total": request.POST.get("grand_total"),
 
             "bank": bank,
         }
