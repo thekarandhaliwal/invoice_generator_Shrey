@@ -1,0 +1,130 @@
+{% load i18n %}
+{% load static %}
+
+<!doctype html>
+<html class="no-js" lang="">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Login - Invoice Generator</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'assets/images/favicon.ico' %}">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'registration/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'registration/css/fontawesome-all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'registration/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <div id="preloader" class="preloader">
+        <div class='inner'>
+            <div class='line1'></div>
+            <div class='line2'></div>
+            <div class='line3'></div>
+        </div>
+    </div>
+    <section class="fxt-template-animation fxt-template-layout34" data-bg-image="img/elements/bg1.png">
+        <div class="fxt-shape">
+            <div class="fxt-transformX-L-50 fxt-transition-delay-1">
+                <img src="{% static 'registration/img/elements/shape1.png' %}" alt="Shape">
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="fxt-column-wrap justify-content-between">
+                        <div class="fxt-animated-img">
+                            <div class="fxt-transformX-L-50 fxt-transition-delay-10">
+                                <img src="{% static 'registration/img/figure/bg34-1.png' %}" alt="Animated Image">
+                            </div>
+                        </div>
+                        <!-- <div class="fxt-transformX-L-50 fxt-transition-delay-3">
+                            <a href="/stocks/" class="fxt-logo"><img src="{% static 'registration/img/plusventure.png' %}" alt="Logo"></a>
+                        </div> -->
+                        <div class="fxt-transformX-L-50 fxt-transition-delay-5">
+                            <div class="fxt-middle-content">
+                                <h1 class="fxt-main-title">Login into Invoice Generator</h1>
+                                <div class="fxt-switcher-description1">If you don’t have an account You can Contact admin</div>
+                            </div>
+                        </div>
+                        <div class="fxt-transformX-L-50 fxt-transition-delay-7">
+                            <div class="fxt-qr-code">
+                                <img src="{% static 'registration/img/elements/qr-login-34.png' %}" alt="QR">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="fxt-column-wrap justify-content-center">
+                        <div class="fxt-form">
+                            <form method="POST" action="{% url 'login' %}" >
+                                {% csrf_token %}
+                                {% if form.non_field_errors %}
+                                <div class="alert alert-danger" role="alert">
+                                    {% for error in form.non_field_errors %}
+                                        <div class="error-message">{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                                <!-- <div class="form-group">
+                                    <h3>Login</h3>
+                                </div> -->
+                                <div class="form-group">
+                                    <label for="id_username">{% trans "Username" %}</label>
+                                    <input type="text" id="id_username" class="form-control" name="username" placeholder="Enter Username" >
+                                    {% if form.errors.username %}
+                                    {% for error in form.errors.username %}
+                                        <div class="error-message">{{ error }}</div>
+                                    {% endfor %}
+                                    {% endif %}
+                                </div>
+                                <div class="form-group">
+                                    <label for="id_password">{% trans "Password" %}</label>
+                                    <input id="password" type="password" class="form-control" name="password" placeholder="********">
+                                    <i toggle="#password" class="fa fa-fw fa-eye toggle-password field-icon"></i>
+                                    {% if form.errors.password %}
+                                    {% for error in form.errors.password %}
+                                        <div class="error-message">{{ error }}</div>
+                                    {% endfor %}
+                                    {% endif %}
+                                </div>
+                                <!-- <div class="form-group">
+                                    <div class="fxt-switcher-description2 text-right">
+                                        <a href="forgot-password-34.html" class="fxt-switcher-text">Recovery Password</a>
+                                    </div>
+                                </div> -->
+                                <div class="form-group">
+                                    <button type="submit" class="fxt-btn-fill">Sign In</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="fxt-style-line">
+                            <span>Or contact with admin</span>
+                        </div>
+                        <!-- <ul class="fxt-socials">
+                            <li class="fxt-google">
+                                <a href="#" title="google"><i class="fab fa-google-plus-g"></i></a>
+                            </li>
+                            <li class="fxt-apple">
+                                <a href="#" title="apple"><i class="fab fa-apple"></i></a>
+                            </li>
+                            <li class="fxt-facebook">
+                                <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                            </li>
+                        </ul> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="{% static 'registration/js/jquery.min.js' %}"></script>
+    <script src="{% static 'registration/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'registration/js/imagesloaded.pkgd.min.js' %}"></script>
+    <script src="{% static 'registration/js/main.js' %}"></script>
+</body>
+
+
+</html>

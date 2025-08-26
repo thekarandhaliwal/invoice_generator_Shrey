@@ -7,6 +7,32 @@ from django.http import HttpResponse
 from django.template.loader import render_to_string
 from datetime import date
 
+# app/views.py
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
+from django.contrib.auth.forms import AuthenticationForm
+
+def custom_login(request):
+    if request.method == "POST":
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get("username")
+            password = form.cleaned_data.get("password")
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect("invoice_view")  # redirect to dashboard after login
+            else:
+                messages.error(request, "Invalid username or password")
+        else:
+            messages.error(request, "Invalid username or password")
+    else:
+        form = AuthenticationForm()
+    
+    return render(request, "registration/login.html", {"form": form})
+
+
 def index(request):
     return render(request, "base.html")
 
@@ -50,7 +76,248 @@ from .models import BankDetail
 from django.conf import settings
 import os
 
+from django.contrib.auth.decorators import login_required
 
+# @login_required
+# def invoice_view(request):
+#     bank = BankDetail.objects.last()   # fetch last saved bank detail
+
+#     if request.method == "POST":
+#         invoice_no = request.POST.get("invoice_no")
+#         invoice_date = request.POST.get("invoice_date")
+#         client_name = request.POST.get("client_name")
+#         client_address = request.POST.get("client_address")
+#         contact_no = request.POST.get("contact_no")
+#         email = request.POST.get("email")
+#         gstin = request.POST.get("gstin")
+#         ref_no = request.POST.get("ref_no")
+#         ref_date = request.POST.get("ref_date")
+
+#         sn_list = request.POST.getlist("sn[]")
+#         topics = request.POST.getlist("training_topic[]")
+#         venues = request.POST.getlist("venue[]")
+#         participants = request.POST.getlist("participants[]")
+#         dates = request.POST.getlist("training_date[]")
+#         hsn_codes = request.POST.getlist("hsn_code[]")
+#         fee_per_list = request.POST.getlist("course_fee_per_participant[]")
+#         fee_amount_list = request.POST.getlist("course_fee_amount[]")
+
+#         # Build rows for template
+#         training_rows = []
+#         total_before_tax = 0
+#         for i in range(len(sn_list)):
+#             row = {
+#                 "sn": sn_list[i],
+#                 "topic": topics[i],
+#                 "venue": venues[i],
+#                 "participants": participants[i],
+#                 "date": dates[i],
+#                 "hsn": hsn_codes[i],
+#                 "fee_per": fee_per_list[i],
+#                 "fee_amount": fee_amount_list[i],
+#             }
+#             training_rows.append(row)
+#             try:
+#                 total_before_tax += float(fee_amount_list[i] or 0)
+#             except:
+#                 pass
+
+#         igst = total_before_tax * 0.18
+#         total_after_tax = total_before_tax + igst
+
+#         context = {
+#             "invoice_no": invoice_no,
+#             "invoice_date": invoice_date or date.today(),
+#             "client_name": client_name,
+#             "client_address": client_address,
+#             "contact_no": contact_no,
+#             "email": email,
+#             "gstin": gstin,
+#             "ref_no": ref_no,
+#             "ref_date": ref_date,
+
+#             "trainings": training_rows,
+#             "total_before_tax": f"{total_before_tax:,.2f}",
+#             "igst": f"{igst:,.2f}",
+#             "total_after_tax": f"{total_after_tax:,.2f}",
+#             "grand_total": f"{total_after_tax:,.2f}",
+
+
+#             "bank": bank,
+#         }
+
+
+# from django.contrib.auth.decorators import login_required
+# from num2words import num2words
+# from datetime import date
+
+# @login_required
+# def invoice_view(request):
+#     bank = BankDetail.objects.last()   # fetch last saved bank detail
+
+#     if request.method == "POST":
+#         invoice_no = request.POST.get("invoice_no")
+#         invoice_date = request.POST.get("invoice_date")
+#         client_name = request.POST.get("client_name")
+#         client_address = request.POST.get("client_address")
+#         contact_no = request.POST.get("contact_no")
+#         email = request.POST.get("email")
+#         gstin = request.POST.get("gstin")
+#         ref_no = request.POST.get("ref_no")
+#         ref_date = request.POST.get("ref_date")
+
+#         sn_list = request.POST.getlist("sn[]")
+#         topics = request.POST.getlist("training_topic[]")
+#         venues = request.POST.getlist("venue[]")
+#         participants = request.POST.getlist("participants[]")
+#         dates = request.POST.getlist("training_date[]")
+#         hsn_codes = request.POST.getlist("hsn_code[]")
+#         fee_per_list = request.POST.getlist("course_fee_per_participant[]")
+#         fee_amount_list = request.POST.getlist("course_fee_amount[]")
+
+#         # Build rows for template
+#         training_rows = []
+#         total_before_tax = 0
+#         for i in range(len(sn_list)):
+#             row = {
+#                 "sn": sn_list[i],
+#                 "topic": topics[i],
+#                 "venue": venues[i],
+#                 "participants": participants[i],
+#                 "date": dates[i],
+#                 "hsn": hsn_codes[i],
+#                 "fee_per": fee_per_list[i],
+#                 "fee_amount": fee_amount_list[i],
+#             }
+#             training_rows.append(row)
+#             try:
+#                 total_before_tax += float(fee_amount_list[i] or 0)
+#             except:
+#                 pass
+
+#         igst = total_before_tax * 0.18
+#         total_after_tax = total_before_tax + igst
+
+#         # Convert to words (currency in Indian format)
+#         grand_total_words = num2words(
+#             round(total_after_tax, 2),
+#             to="currency",
+#             lang="en_IN"
+#         ).replace("euro", "Rupees").replace("cents", "Paise")
+
+#         context = {
+#             "invoice_no": invoice_no,
+#             "invoice_date": invoice_date or date.today(),
+#             "client_name": client_name,
+#             "client_address": client_address,
+#             "contact_no": contact_no,
+#             "email": email,
+#             "gstin": gstin,
+#             "ref_no": ref_no,
+#             "ref_date": ref_date,
+
+#             "trainings": training_rows,
+#             "total_before_tax": f"{total_before_tax:,.2f}",
+#             "igst": f"{igst:,.2f}",
+#             "total_after_tax": f"{total_after_tax:,.2f}",
+#             "grand_total": f"{total_after_tax:,.2f}",
+#             "amount_words": grand_total_words,   # ✅ send to template
+
+#             "bank": bank,
+#         }
+
+
+
+        # return render(request, "invoice_template.html", context)
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from num2words import num2words
+from datetime import date
+from .models import BankDetail
+
+
+# @login_required
+# def invoice_view(request):
+#     bank = BankDetail.objects.last()   # fetch last saved bank detail
+
+#     if request.method == "POST":
+#         invoice_no = request.POST.get("invoice_no")
+#         invoice_date = request.POST.get("invoice_date")
+#         client_name = request.POST.get("client_name")
+#         client_address = request.POST.get("client_address")
+#         contact_no = request.POST.get("contact_no")
+#         email = request.POST.get("email")
+#         gstin = request.POST.get("gstin")
+#         ref_no = request.POST.get("ref_no")
+#         ref_date = request.POST.get("ref_date")
+
+#         sn_list = request.POST.getlist("sn[]")
+#         topics = request.POST.getlist("training_topic[]")
+#         venues = request.POST.getlist("venue[]")
+#         participants = request.POST.getlist("participants[]")
+#         dates = request.POST.getlist("training_date[]")
+#         hsn_codes = request.POST.getlist("hsn_code[]")
+#         fee_per_list = request.POST.getlist("course_fee_per_participant[]")
+#         fee_amount_list = request.POST.getlist("course_fee_amount[]")
+
+#         # Build rows for template
+#         training_rows = []
+#         total_before_tax = 0
+#         for i in range(len(sn_list)):
+#             row = {
+#                 "sn": sn_list[i],
+#                 "topic": topics[i],
+#                 "venue": venues[i],
+#                 "participants": participants[i],
+#                 "date": dates[i],
+#                 "hsn": hsn_codes[i],
+#                 "fee_per": fee_per_list[i],
+#                 "fee_amount": fee_amount_list[i],
+#             }
+#             training_rows.append(row)
+#             try:
+#                 total_before_tax += float(fee_amount_list[i] or 0)
+#             except:
+#                 pass
+
+#         # Tax calculation
+#         igst = total_before_tax * 0.18
+#         total_after_tax = total_before_tax + igst
+
+#         # --- Bill Amount in Words ---
+#         # Round to nearest rupee (ignore paise)
+#         grand_total_number = int(round(total_after_tax, 0))
+
+#         # Convert to words (Indian style)
+#         grand_total_words = num2words(grand_total_number, lang="en_IN")
+#         grand_total_words = grand_total_words.replace("-", " ").title() + " Only"
+
+#         # Context for template
+#         context = {
+#             "invoice_no": invoice_no,
+#             "invoice_date": invoice_date or date.today(),
+#             "client_name": client_name,
+#             "client_address": client_address,
+#             "contact_no": contact_no,
+#             "email": email,
+#             "gstin": gstin,
+#             "ref_no": ref_no,
+#             "ref_date": ref_date,
+
+#             "trainings": training_rows,
+#             "total_before_tax": f"{total_before_tax:,.2f}",
+#             "igst": f"{igst:,.2f}",
+#             "total_after_tax": f"{total_after_tax:,.2f}",
+#             "grand_total": f"{total_after_tax:,.2f}",
+#             "grand_total_words": grand_total_words,   # ✅ words for display
+
+#             "bank": bank,
+#         }
+
+
+
+@login_required
 def invoice_view(request):
     bank = BankDetail.objects.last()   # fetch last saved bank detail
 
@@ -64,14 +331,13 @@ def invoice_view(request):
         gstin = request.POST.get("gstin")
         ref_no = request.POST.get("ref_no")
         ref_date = request.POST.get("ref_date")
+        gst_percentage = request.POST.get("gst_percentage")  # ✅ from frontend
 
-        # training_topic = request.POST.get("training_topic")
-        # venue = request.POST.get("venue")
-        # participants = request.POST.get("participants")
-        # training_date = request.POST.get("training_date")
-        # hsn_code = request.POST.get("hsn_code")
-        # fee_per_participant = request.POST.get("fee_per_participant")
-        # fee_amount = request.POST.get("fee_amount")
+        # default GST % if not entered
+        try:
+            gst_percentage = float(gst_percentage or 0)
+        except:
+            gst_percentage = 0
 
         sn_list = request.POST.getlist("sn[]")
         topics = request.POST.getlist("training_topic[]")
@@ -102,45 +368,16 @@ def invoice_view(request):
             except:
                 pass
 
-        # Tax calculations
-        igst = total_before_tax * 0.18
-        total_after_tax = total_before_tax + igst
+        # Tax calculation (user entered GST %)
+        gst_amount = total_before_tax * (gst_percentage / 100)
+        total_after_tax = total_before_tax + gst_amount
 
+        # --- Bill Amount in Words ---
+        grand_total_number = int(round(total_after_tax, 0))
+        grand_total_words = num2words(grand_total_number, lang="en_IN")
+        grand_total_words = grand_total_words.replace("-", " ").title() + " Only"
 
-        # total_before_tax = request.POST.get("total_before_tax")
-        # igst = request.POST.get("igst")
-        # total_after_tax = request.POST.get("total_after_tax")
-        # amount_words = request.POST.get("amount_words")
-        # grand_total = request.POST.get("grand_total")
-
-        # context = {
-        #     "invoice_no": invoice_no,
-        #     "invoice_date": invoice_date or date.today(),
-        #     "client_name": client_name,
-        #     "client_address": client_address,
-        #     "contact_no": contact_no,
-        #     "email": email,
-        #     "gstin": gstin,
-        #     "ref_no": ref_no,
-        #     "ref_date": ref_date,
-
-        #     "training_topic": training_topic,
-        #     "venue": venue,
-        #     "participants": participants,
-        #     "training_date": training_date,
-        #     "hsn_code": hsn_code,
-        #     "fee_per_participant": fee_per_participant,
-        #     "fee_amount": fee_amount,
-
-        #     "total_before_tax": total_before_tax,
-        #     "igst": igst,
-        #     "total_after_tax": total_after_tax,
-        #     "amount_words": amount_words,
-        #     "grand_total": grand_total,
-
-        #     "bank": bank,   # pass latest saved bank details
-        # }
-
+        # Context for template
         context = {
             "invoice_no": invoice_no,
             "invoice_date": invoice_date or date.today(),
@@ -152,22 +389,17 @@ def invoice_view(request):
             "ref_no": ref_no,
             "ref_date": ref_date,
 
-            # "trainings": trainings,  # 👈 now loop in template
             "trainings": training_rows,
             "total_before_tax": f"{total_before_tax:,.2f}",
-            "igst": f"{igst:,.2f}",
+            "gst_percentage": gst_percentage,
+            "gst_amount": f"{gst_amount:,.2f}",
             "total_after_tax": f"{total_after_tax:,.2f}",
             "grand_total": f"{total_after_tax:,.2f}",
-            # "total_before_tax": request.POST.get("total_before_tax"),
-            # "igst": request.POST.get("igst"),
-            # "total_after_tax": request.POST.get("total_after_tax"),
-            # "amount_words": request.POST.get("amount_words"),
-            # "grand_total": request.POST.get("grand_total"),
+            "grand_total_words": grand_total_words,
 
             "bank": bank,
         }
-
-
+        
         html = render_to_string("invoice_template.html", context)
 
         static_dir = os.path.join(settings.BASE_DIR, 'generatorApp', 'static')  # Adjust 'planets' if needed

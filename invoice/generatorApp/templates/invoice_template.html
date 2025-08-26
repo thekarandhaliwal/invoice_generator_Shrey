@@ -621,8 +621,8 @@
           </tr>
           <tr>
             <!-- <td></td> -->
-            <td>Add: IGST 18%</td>
-            <td>{{ igst }}</td>
+            <td>Add: IGST ({{ gst_percentage }}%):</td>
+            <td>{{ gst_amount }}</td>
           </tr>
           <tr class="inv-total">
             <!-- <td></td> -->
@@ -636,7 +636,7 @@
       <table style="width:100%; border-collapse:collapse;">
         <tr>
           <td class="inv-amount-words" style="width:70%;">
-             {{ amount_words }}
+            Bill Amount In Words ({{ grand_total_words }})
           </td>
           <td class="inv-grand-total" style="width:30%;">
             Grand Total : {{ grand_total }}

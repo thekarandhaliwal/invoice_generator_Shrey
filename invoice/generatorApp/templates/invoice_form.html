@@ -50,7 +50,7 @@
   </style>
 
 
-<div class="container">
+<div class="container-fluid">
   <div class="inv-card">
     <h2 class="inv-title">Invoice Form</h2>
     
@@ -152,10 +152,10 @@
         <div style="flex: 0 0 20%;">Training Topic</div>
         <div style="flex: 0 0 15%;">Venue</div>
         <div style="flex: 0 0 10%;">Participants</div>
-        <div style="flex: 0 0 12%;">Date</div>
+        <div style="flex: 0 0 10%;">Date</div>
         <div style="flex: 0 0 10%;">HSN Code</div>
-        <div style="flex: 0 0 15%;">Course Fee / Participant</div>
-        <div style="flex: 0 0 15%;">Course Fee Amount</div>
+        <div style="flex: 0 0 10%;">Course Fee / Participant</div>
+        <div style="flex: 0 0 10%;">Course Fee Amount</div>
       </div>
 
       <!-- Rows -->
@@ -166,32 +166,27 @@
             <input type="number" class="form-control" name="sn[]" value="1" readonly>
           </div>
           <div style="flex: 0 0 20%;">
-            <input type="text" class="form-control" name="training_topic[]" value="Leadership & Managerial Skills,
-Management & Business
-Administration." placeholder="Enter Topic">
+            <!-- <input type="text" class="form-control" name="training_topic[]" value="Leadership & Managerial Skills,Management & BusinessAdministration." placeholder="Enter Topic"> -->
+            <textarea class="form-control inv-input" rows="3" name="training_topic[]"  placeholder="Enter client address..." required>This is the fixed value that will appear in the textarea.</textarea>
           </div>
           <div style="flex: 0 0 15%;">
-            <input type="text" class="form-control" name="venue[]" value="New York &
-Los Angeles,
-(United
-State)" placeholder="Enter Venue">
+            <!-- <input type="text" class="form-control" name="venue[]" value="New York &Los Angeles,(United State)" placeholder="Enter Venue"> -->
+            <textarea class="form-control inv-input" rows="3" name="venue[]"  placeholder="Enter client address..." required>This is the fixed value that will appear in the textarea.</textarea>
           </div>
           <div style="flex: 0 0 10%;">
-            <input type="text" class="form-control" name="participants[]" value="Sh. Sanjay Bharti
-Kumar
-Managing
-Director" placeholder="Participants">
+            <!-- <input type="text" class="form-control" name="participants[]" value="Sh. Sanjay Bharti Kumar Managing Director" placeholder="Participants"> -->
+            <textarea class="form-control inv-input" rows="3" name="participants[]"  placeholder="Enter client address..." required>This is the fixed value that will appear in the textarea.</textarea>
           </div>
-          <div style="flex: 0 0 12%;">
+          <div style="flex: 0 0 10%;">
             <input type="date" class="form-control" value="2025-08-25" name="training_date[]">
           </div>
           <div style="flex: 0 0 10%;">
             <input type="text" class="form-control" name="hsn_code[]" value="999294" placeholder="HSN">
           </div>
-          <div style="flex: 0 0 15%;">
+          <div style="flex: 0 0 10%;">
             <input type="number" class="form-control fee-per" name="course_fee_per_participant[]" value="478000.00" placeholder="0" >
           </div>
-          <div style="flex: 0 0 15%;">
+          <div style="flex: 0 0 10%;">
             <input type="number" class="form-control fee-amount" name="course_fee_amount[]" value="478000" placeholder="0" required>
           </div>
         </div>
@@ -233,7 +228,14 @@ Director" placeholder="Participants">
           <div class="col-md-6 text-end fw-bold text-success"><span id="grand-total">0.00</span></div>
         </div>
       </div> -->
-      
+      <br>
+            <div class="inv-section-title">GST</div>
+
+  <div class="form-group">
+    <label for="gst_percentage">GST Percentage</label>
+    <input type="number" step="0.01" class="form-control" name="gst_percentage" placeholder="Enter GST %" required>
+</div>
+<br>
       <div class="container my-4">
         <div class="card shadow-sm p-4">
           <h4 class="mb-3">Details For RTGS, NEFT & ECS Payment</h4>
